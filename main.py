@@ -21,7 +21,11 @@ if __name__ == "__main__":
     hover_sfc.fill((0, 255, 0))
     pressed_sfc = Surface((500, 200))
     pressed_sfc.fill((0, 0, 255))
-    button = Button(Rect(100, 100, 500, 200), idle_sfc, hover_sfc, pressed_sfc)
+    button = Button(
+        Rect(100, 100, 500, 200),
+        idle_sfc,
+        {ClickState.HOVER: hover_sfc, ClickState.PRESSED: pressed_sfc},
+    )
     double_click = False
 
     class TestScene(Scene):

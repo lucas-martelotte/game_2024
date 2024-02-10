@@ -1,7 +1,7 @@
 from pygame.surface import Surface
 
 from .. import Entity
-from ..utils import ClickState, Rect
+from ..utils import ClickState, MouseButtons, Rect
 
 
 class Button(Entity):
@@ -9,8 +9,7 @@ class Button(Entity):
         self,
         click_rect: Rect,
         idle_sfc: Surface,
-        hover_sfc: Surface | None = None,
-        pressed_sfc: Surface | None = None,
+        state_2_sfc: dict[ClickState, Surface],
     ):
         """
         Creates a new button.
@@ -24,15 +23,10 @@ class Button(Entity):
         """
         super().__init__(click_rect)
         self.idle_sfc = idle_sfc
-        self.hover_sfc = hover_sfc or idle_sfc
-        self.pressed_sfc = pressed_sfc or idle_sfc
+        self.state_2_sfc = state_2_sfc
 
     @property
     def surface(self) -> Surface:
-        if self.is_left_idle() or self.is_left_clicked():
-            return self.idle_sfc
-        elif self.is_left_pressed():
-            return self.pressed_sfc
-        elif self.is_left_hover():
-            return self.hover_sfc
-        raise Exception(f"Unexpected error.")
+        state = self._mouse_button_state_dict[MouseButtons.LEFT]
+        sfc = self.state_2_sfc.get(state, self.idle_sfc)
+        return sfc
