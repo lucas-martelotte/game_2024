@@ -13,4 +13,4 @@ class Scene:
         pass
 
     def render(self, screen: Surface):
-        screen.fill((255, 255, 255))
+        pass
