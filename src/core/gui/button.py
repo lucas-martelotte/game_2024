@@ -1,8 +1,7 @@
 from pygame.surface import Surface
 
-from ..collision import ClickState
-from ..entity import Entity
-from ..utils import Rect
+from .. import Entity
+from ..utils import ClickState, Rect
 
 
 class Button(Entity):

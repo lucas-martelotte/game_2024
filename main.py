@@ -12,9 +12,8 @@ if __name__ == "__main__":
     from pygame.surface import Surface
 
     from src.core import Scene
-    from src.core.collision import ClickState
     from src.core.gui import Button
-    from src.core.utils import Rect
+    from src.core.utils import ClickState, Rect
 
     idle_sfc = Surface((500, 200))
     idle_sfc.fill((255, 0, 0))
