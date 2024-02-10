@@ -26,6 +26,7 @@ if __name__ == "__main__":
 
     class TestScene(Scene):
         def __init__(self):
+            super().__init__("TEST")
             self.color = (255, 255, 255)
 
         def update(self):
@@ -45,6 +46,5 @@ if __name__ == "__main__":
             screen.fill(self.color)
             screen.blit(button.surface, button.rect)
 
-    control = Control()
-    control.set_active_scene(TestScene())
+    control = Control(TestScene())
     control.main_loop()

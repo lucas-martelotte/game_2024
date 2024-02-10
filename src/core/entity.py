@@ -12,7 +12,7 @@ class Entity:
 
     def __init__(self, rect: Rect):
         self.rect = rect
-        self._click_state: ClickState = ClickState.IDLE
+        self._click_state = ClickState.IDLE
         self._last_click_time: float | None = None
         self._last_press_time: float | None = None
         self._double_click_time = 0.5
