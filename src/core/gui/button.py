@@ -29,11 +29,10 @@ class Button(Entity):
 
     @property
     def surface(self) -> Surface:
-        state = self.click_state
-        if state in [ClickState.IDLE, ClickState.CLICKED, ClickState.DOUBLE_CLICKED]:
+        if self.is_left_idle() or self.is_left_clicked():
             return self.idle_sfc
-        elif state in [ClickState.PRESSED, ClickState.DOUBLE_PRESSED]:
+        elif self.is_left_pressed():
             return self.pressed_sfc
-        elif state == ClickState.HOVER:
+        elif self.is_left_hover():
             return self.hover_sfc
-        raise Exception(f"Invalid value for click state: {state.name}")
+        raise Exception(f"Unexpected error.")

@@ -36,7 +36,7 @@ if __name__ == "__main__":
         def on_event(self, event: pygame.Event):
             super().on_event(event)
             button.on_event(event)
-            if button.click_state == ClickState.DOUBLE_PRESSED:
+            if button.is_right_double_pressed():
                 self.color = (
                     (0, 0, 0) if self.color == (255, 255, 255) else (255, 255, 255)
                 )
