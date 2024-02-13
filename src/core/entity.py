@@ -12,9 +12,9 @@ class Entity(Collidable):
 
     def __init__(self, position: Pos, collider: Collider):
         super().__init__(collider)
-        self.position = position
-        self.velocity = Pos(0, 0)
-        self.acceleration = Pos(0, 0)
+        self._position = position
+        self._velocity = Pos(0, 0)
+        self._acceleration = Pos(0, 0)
         self._mouse_button_state_dict: dict[MouseButtons, ClickState] = {
             button: ClickState.IDLE for button in MouseButtons
         }
@@ -26,16 +26,34 @@ class Entity(Collidable):
         }
         self._double_click_time = 0.5
 
+    @property
+    def position(self) -> Pos:
+        return self._position
+
+    @property
+    def velocity(self) -> Pos:
+        return self._velocity
+
+    @property
+    def acceleration(self) -> Pos:
+        return self._acceleration
+
     def set_position(self, pos: Pos):
-        difference = Pos.sub(pos, self.position)
+        difference = Pos.sub(pos, self._position)
         self.move(difference)
 
+    def set_velocity(self, vel: Pos):
+        self._velocity = vel
+
+    def set_acceleration(self, acc: Pos):
+        self._acceleration = acc
+
     def move(self, vector: Pos):
-        self.position = Pos.add(self.position, vector)
+        self._position = Pos.add(self._position, vector)
         self.collider.move(vector)
 
     def accelerate(self, vector: Pos):
-        self.velocity = Pos.add(self.velocity, vector)
+        self._velocity = Pos.add(self._velocity, vector)
 
     def get_surface(self) -> tuple[Surface, Pos]:
         raise NotImplementedError()
@@ -47,7 +65,7 @@ class Entity(Collidable):
         else:
             self._handle_hover()
         self.move(self.velocity)
-        self.accelerate(self.acceleration)
+        self.accelerate(self._acceleration)
 
     def on_event(self, event: Event) -> None:
         mouse_pos = Pos(*pygame.mouse.get_pos())
