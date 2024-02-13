@@ -1,0 +1,5 @@
+- Add documentation to collision module
+- Implement bounding_rect of ComplexCollider
+- Implement GJK algorithm
+- Implement Circle-Polygon collision
+- Implement shortest-vector in AABB collision
