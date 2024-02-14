@@ -3,7 +3,7 @@ from typing import Literal
 
 from ..utils import Pos, insertion_sort
 from .collidable import Collidable
-from .collision_detector import CollisionDetector
+from .collision_detection import CollisionDetector
 
 
 class _Vertice2D:

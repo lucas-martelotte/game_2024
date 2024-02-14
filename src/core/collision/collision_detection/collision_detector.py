@@ -1,6 +1,6 @@
-from ..utils import Pos, Rect
-from .collider import Collider
-from .colliders import PolygonCollider, RectCollider
+from ...utils import Pos, Rect
+from ..collider import Collider
+from ..colliders import PolygonCollider, RectCollider
 from .gjk import gjk_algorithm_2d
 
 
