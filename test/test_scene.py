@@ -5,6 +5,7 @@ from src.core import Scene
 from src.core.collision.colliders import RectCollider
 from src.core.gui import Button
 from src.core.utils import Rect
+from src.game.singletons import GameSettings
 
 idle_sfc = Surface((500, 200))
 idle_sfc.fill((255, 0, 0))
@@ -13,7 +14,11 @@ hover_sfc.fill((0, 255, 0))
 pressed_sfc = Surface((500, 200))
 pressed_sfc.fill((0, 0, 255))
 button = Button(
-    RectCollider(Rect(100, 100, 500, 200)), idle_sfc, pressed_sfc, hover_sfc
+    RectCollider(Rect(100, 100, 500, 200)),
+    GameSettings().fps,
+    idle_sfc,
+    pressed_sfc,
+    hover_sfc,
 )
 double_click = False
 

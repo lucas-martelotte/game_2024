@@ -9,6 +9,7 @@ class Button(Entity):
     def __init__(
         self,
         collider: RectCollider,
+        fps: int,
         idle_sfc: Surface,
         pressed_sfc: Surface | None = None,
         hover_sfc: Surface | None = None,
@@ -23,7 +24,7 @@ class Button(Entity):
         pressed_sfc (Surface | None, optional): the surface which will appear
             if the user is pressing the button. If None, sets to idle_sfc.
         """
-        super().__init__(Pos.from_rect(collider.rect), collider)
+        super().__init__(collider, Pos.from_rect(collider.bounding_rect), fps)
         self.idle_sfc = idle_sfc
         self.pressed_sfc = pressed_sfc or idle_sfc
         self.hover_sfc = hover_sfc or idle_sfc

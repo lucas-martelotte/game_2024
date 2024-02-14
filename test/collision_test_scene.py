@@ -23,8 +23,10 @@ class CollisionTestScene(Scene):
             velocity = Pos(randint(-5, 5), randint(-5, 5))
             idle_sfc = Surface((width, height))
             idle_sfc.fill((0, 0, 0))
-            button = Button(RectCollider(Rect(x, y, width, height)), idle_sfc)
-            button.set_velocity(velocity)
+            button = Button(
+                RectCollider(Rect(x, y, width, height)), GameSettings().fps, idle_sfc
+            )
+            button.set_velocity_in_seconds(velocity)
             self.buttons.add(button)
         self.collision_manager = CollisionManager2D()
         self.collision_manager.add_collidables(frozenset(self.buttons))
@@ -64,6 +66,6 @@ class CollisionTestScene(Scene):
         screen_width = GameSettings().screen_width
         screen_height = GameSettings().screen_height
         if rect.right >= screen_width or rect.left <= 0:
-            button.set_velocity(Pos(-button.velocity.x, button.velocity.y))
+            button.set_velocity_in_frames(Pos(-button.velocity.x, button.velocity.y))
         if rect.bottom >= screen_height or rect.top <= 0:
-            button.set_velocity(Pos(button.velocity.x, -button.velocity.y))
+            button.set_velocity_in_frames(Pos(button.velocity.x, -button.velocity.y))

@@ -1,3 +1,4 @@
+- Implement arbitrary comparison to order collidables (put in the constructor)
 - Add documentation to collision module
 - Implement bounding_rect of ComplexCollider
 - Implement GJK algorithm

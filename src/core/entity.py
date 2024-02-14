@@ -10,8 +10,9 @@ from .utils import ClickState, MouseButtons, Pos
 
 class Entity(Collidable):
 
-    def __init__(self, position: Pos, collider: Collider):
+    def __init__(self, collider: Collider, position: Pos, fps: int):
         super().__init__(collider)
+        self.fps = fps
         self._position = position
         self._velocity = Pos(0, 0)
         self._acceleration = Pos(0, 0)
@@ -25,6 +26,31 @@ class Entity(Collidable):
             button: None for button in MouseButtons
         }
         self._double_click_time = 0.5
+
+    def get_surface(self) -> tuple[Surface, Pos]:
+        raise NotImplementedError()
+
+    def update(self):
+        mouse_pos = Pos(*pygame.mouse.get_pos())
+        if not self.collider.point_collision(mouse_pos):
+            self.reset_all_mouse_button_states()
+        else:
+            self._handle_hover()
+        self.move(self.velocity)
+        self.accelerate(self.acceleration)
+
+    def on_event(self, event: Event) -> None:
+        mouse_pos = Pos(*pygame.mouse.get_pos())
+        if not self.collider.point_collision(mouse_pos):
+            self.reset_all_mouse_button_states()
+            return
+        match event.type:
+            case pygame.MOUSEBUTTONDOWN:
+                event_button = MouseButtons(event.button)
+                self._handle_mouse_button_down(event_button)
+            case pygame.MOUSEBUTTONUP:
+                event_button = MouseButtons(event.button)
+                self._handle_mouse_button_up(event_button)
 
     @property
     def position(self) -> Pos:
@@ -42,10 +68,20 @@ class Entity(Collidable):
         difference = Pos.sub(pos, self._position)
         self.move(difference)
 
-    def set_velocity(self, vel: Pos):
+    def set_velocity_in_seconds(self, vel: Pos):
+        """The input is assumed to be in pixels per second"""
+        self._velocity = Pos(vel.x // self.fps, vel.y // self.fps)
+
+    def set_velocity_in_frames(self, vel: Pos):
+        """The input is assumed to be in pixels per frame"""
         self._velocity = vel
 
-    def set_acceleration(self, acc: Pos):
+    def set_acceleration_in_seconds(self, acc: Pos):
+        """The input is assumed to be in pixels per second squared"""
+        self._acceleration = Pos(acc.x // self.fps**2, acc.y // self.fps**2)
+
+    def set_acceleration_in_frames(self, acc: Pos):
+        """The input is assumed to be in pixels per frame squared"""
         self._acceleration = acc
 
     def move(self, vector: Pos):
@@ -54,31 +90,6 @@ class Entity(Collidable):
 
     def accelerate(self, vector: Pos):
         self._velocity = Pos.add(self._velocity, vector)
-
-    def get_surface(self) -> tuple[Surface, Pos]:
-        raise NotImplementedError()
-
-    def update(self):
-        mouse_pos = Pos(*pygame.mouse.get_pos())
-        if not self.collider.point_collision(mouse_pos):
-            self.reset_all_mouse_button_states()
-        else:
-            self._handle_hover()
-        self.move(self.velocity)
-        self.accelerate(self._acceleration)
-
-    def on_event(self, event: Event) -> None:
-        mouse_pos = Pos(*pygame.mouse.get_pos())
-        if not self.collider.point_collision(mouse_pos):
-            self.reset_all_mouse_button_states()
-            return
-        match event.type:
-            case pygame.MOUSEBUTTONDOWN:
-                event_button = MouseButtons(event.button)
-                self._handle_mouse_button_down(event_button)
-            case pygame.MOUSEBUTTONUP:
-                event_button = MouseButtons(event.button)
-                self._handle_mouse_button_up(event_button)
 
     def _handle_mouse_button_down(self, button: MouseButtons):
         """This function assumes the mouse has collided"""
