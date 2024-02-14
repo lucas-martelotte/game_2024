@@ -4,3 +4,5 @@
 - Implement GJK algorithm
 - Implement Circle-Polygon collision
 - Implement shortest-vector in AABB collision
+- Implement point collision for Polygon
+- Implement __is_convex for polygon

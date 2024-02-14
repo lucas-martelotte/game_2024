@@ -1,20 +1,25 @@
+from typing import override
+
 from ...utils import Pos, Rect
-from ..collider import Collider
+from .polygon_collider import PolygonCollider
 
 
-class RectCollider(Collider):
+class RectCollider(PolygonCollider):
     def __init__(self, rect: Rect):
         self.rect = rect
-        super().__init__()
-
-    def point_collision(self, point: Pos) -> bool:
-        return (
-            self.rect.x <= point.x <= self.rect.x + self.rect.width
-            and self.rect.y <= point.y <= self.rect.y + self.rect.height
+        super().__init__(
+            [rect.top_left, rect.bottom_left, rect.bottom_right, rect.top_right]
         )
 
+    @override
+    def _point_collision(self, point: Pos) -> bool:
+        # At this point, collision already failed for bounding rect
+        return False
+
+    @override
     def _calculate_bounding_rect(self) -> Rect:
         return self.rect
 
     def _move(self, translation_vector: Pos):
+        super()._move(translation_vector)
         self.rect = Rect.move(self.rect, translation_vector)

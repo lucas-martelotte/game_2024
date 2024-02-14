@@ -5,7 +5,7 @@ from pygame.surface import Surface
 
 from src.core import Entity, Scene
 from src.core.collision import Collidable, CollisionManager2D
-from src.core.collision.colliders import RectCollider
+from src.core.collision.colliders import PolygonCollider, RectCollider
 from src.core.gui import Button
 from src.core.utils import Pos, Rect
 from src.game.singletons import GameSettings

@@ -16,13 +16,22 @@ class Collider:
         self._bounding_rect = Rect.move(self._bounding_rect, translation_vector)
         self._move(translation_vector)
 
+    def point_collision(self, point: Pos) -> bool:
+        rect = self.bounding_rect
+        collides_with_rect = (
+            rect.left <= point.x <= rect.right and rect.top <= point.y <= rect.bottom
+        )
+        if not collides_with_rect:
+            return False
+        return self._point_collision(point)
+
     @abstractmethod
     def _move(self, translation_vector: Pos):
         """Translates itself by translation_vector"""
         pass
 
     @abstractmethod
-    def point_collision(self, point: Pos) -> bool:
+    def _point_collision(self, point: Pos) -> bool:
         """Detects if a point is colliding"""
         pass
 

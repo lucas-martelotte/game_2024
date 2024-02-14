@@ -1,14 +1,14 @@
 from pygame.surface import Surface
 
 from .. import Entity
-from ..collision.colliders import RectCollider
+from ..collision import Collider
 from ..utils import ClickState, MouseButtons, Pos, Rect
 
 
 class Button(Entity):
     def __init__(
         self,
-        collider: RectCollider,
+        collider: Collider,
         fps: int,
         idle_sfc: Surface,
         pressed_sfc: Surface | None = None,

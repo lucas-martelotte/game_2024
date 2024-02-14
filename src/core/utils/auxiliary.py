@@ -1,7 +1,7 @@
-from typing import Callable
+from typing import Any, Callable
 
 
-def insertion_sort(arr: list, size: Callable[[object], int]) -> None:
+def insertion_sort(arr: list, size: Callable[[Any], int]) -> None:
     n = len(arr)  # Get the length of the array
 
     if n <= 1:

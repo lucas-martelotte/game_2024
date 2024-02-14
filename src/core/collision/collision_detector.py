@@ -1,6 +1,7 @@
 from ..utils import Pos, Rect
 from .collider import Collider
-from .colliders import RectCollider
+from .colliders import PolygonCollider, RectCollider
+from .gjk import gjk_algorithm
 
 
 class CollisionDetector:
@@ -15,8 +16,12 @@ class CollisionDetector:
         that separates the two (obj_1 + V does no intersect
         with obj_2).
         """
-        if type(obj_1) == RectCollider and type(obj_2) == RectCollider:
+        if (
+            False
+        ):  # isinstance(obj_1, RectCollider) and isinstance(obj_2, RectCollider):
             return CollisionDetector.AABBCollision(obj_1, obj_2)
+        elif isinstance(obj_1, PolygonCollider) and isinstance(obj_2, PolygonCollider):
+            return Pos(0, 0) if gjk_algorithm(obj_1.as_array, obj_2.as_array) else None
         else:
             raise NotImplementedError()
 
