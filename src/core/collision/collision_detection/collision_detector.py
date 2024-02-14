@@ -27,6 +27,8 @@ class CollisionDetector:
 
     @staticmethod
     def AABBCollision(obj_1: RectCollider, obj_2: RectCollider) -> Pos | None:
+        return Pos(0, 0)
+
         def check(rect_1: Rect, rect_2: Rect) -> bool:
             return (
                 rect_1.left <= rect_2.right

@@ -21,6 +21,24 @@ class GJKTestScene(Scene):
         self.fps_tracker = FPSTracker()
         self.font = pygame.font.SysFont("Comic Sans MS", 30)
 
+        # idle_sfc = Surface((200, 200), pygame.SRCALPHA)
+        # idle_sfc.fill((0, 0, 0))
+        # self.fixed_button = Button(
+        #     Pos(300, 300),
+        #     GameSettings().fps,
+        #     RectCollider(Rect(0, 0, 200, 200)),
+        #     idle_sfc,
+        # )
+
+        # idle_sfc = Surface((200, 200), pygame.SRCALPHA)
+        # idle_sfc.fill((0, 0, 0))
+        # self.mouse_button = Button(
+        #     Pos(300, 300),
+        #     GameSettings().fps,
+        #     RectCollider(Rect(0, 0, 200, 200)),
+        #     idle_sfc,
+        # )
+
         polygon = [Pos(300, 300), Pos(300, 400), Pos(400, 600), Pos(400, 300)]
         collider = PolygonCollider(polygon)
         rect = collider.bounding_rect
@@ -28,7 +46,9 @@ class GJKTestScene(Scene):
         relative_polygon = PolygonCollider(polygon)
         relative_polygon.move(Pos(-300, -300))
         pygame.draw.polygon(idle_sfc, (0, 0, 0), relative_polygon.points)
-        self.fixed_button = Button(collider, GameSettings().fps, idle_sfc)
+        self.fixed_button = Button(
+            Pos(300, 300), GameSettings().fps, collider, idle_sfc
+        )
 
         polygon = [Pos(500, 500), Pos(550, 600), Pos(600, 600)]
         collider = PolygonCollider(polygon)
@@ -37,7 +57,9 @@ class GJKTestScene(Scene):
         relative_polygon = PolygonCollider(polygon)
         relative_polygon.move(Pos(-500, -500))
         pygame.draw.polygon(idle_sfc, (0, 0, 0), relative_polygon.points)
-        self.mouse_button = Button(collider, GameSettings().fps, idle_sfc)
+        self.mouse_button = Button(
+            Pos(500, 500), GameSettings().fps, collider, idle_sfc
+        )
 
         self.collision_manager = CollisionManager2D()
         self.collision_manager.add_collidables(
@@ -60,14 +82,16 @@ class GJKTestScene(Scene):
     def render(self, screen):
         super().render(screen)
         if self.collision:
-            screen.fill((255, 255, 255))
-        else:
             screen.fill((255, 0, 0))
+        else:
+            screen.fill((255, 255, 255))
         sfc, pos = self.fixed_button.get_surface()
         screen.blit(sfc, pos)
         sfc, pos = self.mouse_button.get_surface()
         screen.blit(sfc, pos)
-        text_surface = self.font.render(f"FPS: {self.fps_tracker}", False, (0, 0, 0))
+        text_surface = self.font.render(
+            f"FPS: {self.fps_tracker.fps}", False, (0, 0, 0)
+        )
         screen.blit(text_surface, (10, 10))
 
     def handle_button_reflections(self, button: Button):

@@ -100,8 +100,9 @@ class CollisionManager2D:
     def broad_phase(self) -> set[PreCollision]:
         colliding_in_x = self.broad_phase_in_axis("x")
         colliding_in_y = self.broad_phase_in_axis("y")
+        intersection = colliding_in_x.intersection(colliding_in_y)
         self.objs_to_remove = set()
-        return colliding_in_x.intersection(colliding_in_y)
+        return intersection
 
     def broad_phase_in_axis(self, axis: Literal["x", "y"]) -> set[PreCollision]:
         """Implements the sweep-and-prune algorithm for one axis"""

@@ -27,6 +27,7 @@ class Button(Entity):
         """
         super().__init__(position, fps)
         self.collider = collider
+        # self.collider.set_position(self.position)
         self.idle_sfc = idle_sfc
         self.pressed_sfc = pressed_sfc or idle_sfc
         self.hover_sfc = hover_sfc or idle_sfc

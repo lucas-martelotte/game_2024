@@ -38,6 +38,9 @@ class PreCollision:
             )
         return False
 
+    def __hash__(self) -> int:
+        return hash((self.obj_1, self.collider_1)) + hash((self.obj_2, self.collider_2))
+
 
 @dataclass(unsafe_hash=False, kw_only=True, frozen=True)
 class Collision(PreCollision):
@@ -61,3 +64,6 @@ class Collision(PreCollision):
         if not super().__eq__(other):
             return False
         return self.minimal_translation_vector == other.minimal_translation_vector
+
+    def __hash__(self) -> int:
+        return hash((hash(super()), self.minimal_translation_vector))

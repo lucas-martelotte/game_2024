@@ -70,6 +70,10 @@ class CollisionTestScene(Scene):
         for button in self.buttons:
             sfc, pos = button.get_surface()
             screen.blit(sfc, pos)
+            # collider = list(button.get_colliders())[0]
+            # assert isinstance(collider, RectCollider)
+            # pygame.draw.rect(screen, (0, 255, 0), collider.bounding_rect, width=10)
+            # pygame.draw.rect(screen, (0, 0, 255), collider.rect, width=10)
         pygame.draw.rect(screen, (255, 255, 255), (5, 5, 160, 50))
         text_surface = self.font.render(
             f"FPS: {round(self.fps_tracker.fps, 2)}", False, (0, 0, 0)

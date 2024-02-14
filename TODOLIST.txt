@@ -1,12 +1,17 @@
+============ MANDATORY CHANGES ============
+
+- Create a dedicated collision test scene with all the features
 - Optimize GJK
-- Implement arbitrary comparison to order collidables (put in the constructor)
 - Add documentation to collision module
-- Implement bounding_rect of ComplexCollider
-- Implement Circle-Polygon collision
 - Implement minimal translation vector for GJK
 - Implement minimal translation vector for AABB
 - Implement point collision for Polygon
 - Implement __is_convex for polygon
+- Implement Circle-Polygon collision
+- Implement bounding_rect of ComplexCollider
+
+================== IDEAS ==================
+
 - Implement convex hull (?)
 - Dictionary GAME_ENTITY_STATE_2_SPRITE (?)
   - Sprite has data: [set[Collider], list[Surface]]

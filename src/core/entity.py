@@ -27,10 +27,10 @@ class Entity(Collidable):
         }
         self._double_click_time = 0.5
 
-    def _get_colliders(self) -> set[Collider]:
+    def get_surface(self) -> tuple[Surface, Pos]:
         raise NotImplementedError()
 
-    def get_surface(self) -> tuple[Surface, Pos]:
+    def _get_colliders(self) -> set[Collider]:
         raise NotImplementedError()
 
     def get_colliders(self) -> set[Collider]:

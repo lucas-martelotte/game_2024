@@ -12,6 +12,6 @@ if __name__ == "__main__":
     from test.gjk_test_scene import GJKTestScene
     from test.test_scene import TestScene
 
-    # control = Control(GJKTestScene())
-    control = Control(CollisionTestScene())
+    control = Control(GJKTestScene())
+    # control = Control(CollisionTestScene())
     control.main_loop()

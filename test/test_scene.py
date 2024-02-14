@@ -4,7 +4,7 @@ from pygame.surface import Surface
 from src.core import Scene
 from src.core.collision.colliders import RectCollider
 from src.core.gui import Button
-from src.core.utils import Rect
+from src.core.utils import Pos, Rect
 from src.game.singletons import GameSettings
 
 idle_sfc = Surface((500, 200))
@@ -14,8 +14,9 @@ hover_sfc.fill((0, 255, 0))
 pressed_sfc = Surface((500, 200))
 pressed_sfc.fill((0, 0, 255))
 button = Button(
-    RectCollider(Rect(100, 100, 500, 200)),
+    Pos(0, 0),
     GameSettings().fps,
+    RectCollider(Rect(100, 100, 500, 200)),
     idle_sfc,
     pressed_sfc,
     hover_sfc,
