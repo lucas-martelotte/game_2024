@@ -27,8 +27,17 @@ class Entity(Collidable):
         }
         self._double_click_time = 0.5
 
+    def _get_colliders(self) -> set[Collider]:
+        raise NotImplementedError()
+
     def get_surface(self) -> tuple[Surface, Pos]:
         raise NotImplementedError()
+
+    def get_colliders(self) -> set[Collider]:
+        colliders = self._get_colliders()
+        for collider in colliders:
+            collider.set_position(self.position)
+        return colliders
 
     def update(self):
         mouse_pos = Pos(*pygame.mouse.get_pos())

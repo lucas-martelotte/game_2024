@@ -1,14 +1,3 @@
-- Add relative / global position to colliders and surfaces
-    - Change collider parameter on collidables to method
-      get_colliders() -> set[Collider]
-    - Change collision manager to return a five elements
-      tuple[Collidable, Collider, Collidable, Collider, Pos]
-      (1) the first collidable, (2) which of its colliders collided
-      (3) the second collidable, (3) which of its colliders collided
-      (5) the minimal translation vector
-    - In fact, transform this tuple into a Collision object
-    - Change get_surface to get_surfaces() ->  list[tuple[Surface, Pos]]
-      since we might need to render bullets and other stuff
 - Optimize GJK
 - Implement arbitrary comparison to order collidables (put in the constructor)
 - Add documentation to collision module
@@ -23,3 +12,5 @@
   - Sprite has data: [set[Collider], list[Surface]]
   - Think about this well because parts of a Sprite may vary
     if, for instance, the player picks up an upgrade
+- Change get_surface to get_surfaces() ->  list[tuple[Surface, Pos]]
+  since we might need to render bullets and other stuff
