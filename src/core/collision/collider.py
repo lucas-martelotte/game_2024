@@ -7,12 +7,22 @@ class Collider:
     def __init__(self):
         super().__init__()
         self._bounding_rect = self._calculate_bounding_rect()
+        self._position = Pos(0, 0)
+
+    @property
+    def position(self) -> Pos:
+        return self._position
+
+    def set_position(self, position: Pos):
+        translation_vector = Pos.sub(position, self._position)
+        self.move(translation_vector)
 
     def move(self, translation_vector: Pos):
         """
         Translates itself and its own bounding
         rect by translation_vector
         """
+        self._position = Pos.add(self._position, translation_vector)
         self._bounding_rect = Rect.move(self._bounding_rect, translation_vector)
         self._move(translation_vector)
 

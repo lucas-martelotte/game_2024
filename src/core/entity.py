@@ -10,8 +10,8 @@ from .utils import ClickState, MouseButtons, Pos
 
 class Entity(Collidable):
 
-    def __init__(self, collider: Collider, position: Pos, fps: int):
-        super().__init__(collider)
+    def __init__(self, position: Pos, fps: int):
+        super().__init__()
         self.fps = fps
         self._position = position
         self._velocity = Pos(0, 0)
@@ -32,7 +32,7 @@ class Entity(Collidable):
 
     def update(self):
         mouse_pos = Pos(*pygame.mouse.get_pos())
-        if not self.collider.point_collision(mouse_pos):
+        if not self.point_collision(mouse_pos):
             self.reset_all_mouse_button_states()
         else:
             self._handle_hover()
@@ -41,7 +41,7 @@ class Entity(Collidable):
 
     def on_event(self, event: Event) -> None:
         mouse_pos = Pos(*pygame.mouse.get_pos())
-        if not self.collider.point_collision(mouse_pos):
+        if not self.point_collision(mouse_pos):
             self.reset_all_mouse_button_states()
             return
         match event.type:
@@ -51,6 +51,9 @@ class Entity(Collidable):
             case pygame.MOUSEBUTTONUP:
                 event_button = MouseButtons(event.button)
                 self._handle_mouse_button_up(event_button)
+
+    def point_collision(self, point: Pos) -> bool:
+        return any(collider.point_collision(point) for collider in self.get_colliders())
 
     @property
     def position(self) -> Pos:
@@ -86,7 +89,6 @@ class Entity(Collidable):
 
     def move(self, vector: Pos):
         self._position = Pos.add(self._position, vector)
-        self.collider.move(vector)
 
     def accelerate(self, vector: Pos):
         self._velocity = Pos.add(self._velocity, vector)

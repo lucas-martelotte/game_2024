@@ -16,9 +16,7 @@ class CollisionDetector:
         that separates the two (obj_1 + V does no intersect
         with obj_2).
         """
-        if (
-            False
-        ):  # isinstance(obj_1, RectCollider) and isinstance(obj_2, RectCollider):
+        if isinstance(obj_1, RectCollider) and isinstance(obj_2, RectCollider):
             return CollisionDetector.AABBCollision(obj_1, obj_2)
         elif isinstance(obj_1, PolygonCollider) and isinstance(obj_2, PolygonCollider):
             return (

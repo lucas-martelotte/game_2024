@@ -1,10 +1,12 @@
+from abc import ABC, abstractmethod
+
 from .collider import Collider
 
 
-class Collidable:
-    def __init__(self, collider: Collider):
-        self._collider = collider
+class Collidable(ABC):
+    def __init__(self):
+        super().__init__()
 
-    @property
-    def collider(self) -> Collider:
-        return self._collider
+    @abstractmethod
+    def get_colliders(self) -> set[Collider]:
+        pass

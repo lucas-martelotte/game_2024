@@ -21,14 +21,17 @@ class CollisionTestScene(Scene):
         screen_width = GameSettings().screen_width
         screen_height = GameSettings().screen_height
         self.buttons: set[Button] = set()
-        for i in range(500):
+        for i in range(350):
             width, height = randint(10, 20), randint(10, 20)
             x, y = randint(0, screen_width - width), randint(0, screen_height - height)
             velocity = Pos(randint(-5, 5), randint(-5, 5))
             idle_sfc = Surface((width, height))
             idle_sfc.fill((0, 0, 0))
             button = Button(
-                RectCollider(Rect(x, y, width, height)), GameSettings().fps, idle_sfc
+                Pos(x, y),
+                GameSettings().fps,
+                RectCollider(Rect(0, 0, width, height)),
+                idle_sfc,
             )
             button.set_velocity_in_seconds(velocity)
             self.buttons.add(button)
@@ -46,7 +49,9 @@ class CollisionTestScene(Scene):
         for button in self.buttons:
             sfc, _ = button.get_surface()
             sfc.fill((0, 0, 0))
-        for obj_1, obj_2, vec in collisions:
+        for collision in collisions:
+            obj_1 = collision.obj_1
+            obj_2 = collision.obj_2
             assert isinstance(obj_1, Button)
             assert isinstance(obj_2, Button)
             sfc_1, _ = obj_1.get_surface()
@@ -75,7 +80,15 @@ class CollisionTestScene(Scene):
         rect = button.collider.bounding_rect
         screen_width = GameSettings().screen_width
         screen_height = GameSettings().screen_height
-        if rect.right >= screen_width or rect.left <= 0:
+        if rect.right > screen_width:
+            button.set_position(Pos(screen_width - rect.width, button.position.y))
             button.set_velocity_in_frames(Pos(-button.velocity.x, button.velocity.y))
-        if rect.bottom >= screen_height or rect.top <= 0:
+        if rect.left < 0:
+            button.set_position(Pos(0, button.position.y))
+            button.set_velocity_in_frames(Pos(-button.velocity.x, button.velocity.y))
+        if rect.bottom > screen_height:
+            button.set_position(Pos(button.position.x, screen_height - rect.height))
+            button.set_velocity_in_frames(Pos(button.velocity.x, -button.velocity.y))
+        if rect.top < 0:
+            button.set_position(Pos(button.position.x, 0))
             button.set_velocity_in_frames(Pos(button.velocity.x, -button.velocity.y))
