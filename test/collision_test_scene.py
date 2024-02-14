@@ -7,13 +7,17 @@ from src.core import Entity, Scene
 from src.core.collision import Collidable, CollisionManager2D
 from src.core.collision.colliders import PolygonCollider, RectCollider
 from src.core.gui import Button
-from src.core.utils import Pos, Rect
+from src.core.utils import FPSTracker, Pos, Rect
 from src.game.singletons import GameSettings
 
 
 class CollisionTestScene(Scene):
     def __init__(self) -> None:
         super().__init__("TEST")
+
+        self.fps_tracker = FPSTracker()
+        self.font = pygame.font.SysFont("Comic Sans MS", 30)
+
         screen_width = GameSettings().screen_width
         screen_height = GameSettings().screen_height
         self.buttons: set[Button] = set()
@@ -33,6 +37,7 @@ class CollisionTestScene(Scene):
 
     def update(self):
         super().update()
+        self.fps_tracker.update()
         for button in self.buttons:
             button.update()
             self.handle_button_reflections(button)
@@ -60,6 +65,11 @@ class CollisionTestScene(Scene):
         for button in self.buttons:
             sfc, pos = button.get_surface()
             screen.blit(sfc, pos)
+        pygame.draw.rect(screen, (255, 255, 255), (5, 5, 160, 50))
+        text_surface = self.font.render(
+            f"FPS: {round(self.fps_tracker.fps, 2)}", False, (0, 0, 0)
+        )
+        screen.blit(text_surface, (10, 10))
 
     def handle_button_reflections(self, button: Button):
         rect = button.collider.bounding_rect

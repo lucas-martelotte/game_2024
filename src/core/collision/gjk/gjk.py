@@ -1,15 +1,13 @@
 import numpy as np
 
 
-def gjk_algorithm(poly1: np.ndarray, poly2: np.ndarray) -> bool:
+def gjk_algorithm_2d(poly1: np.ndarray, poly2: np.ndarray) -> bool:
     """Assumes poly1 and poly2 are N x 2 arrays of points"""
     initial_point = poly1[0] - poly2[0]
     simplex = [initial_point]
     direction = -initial_point
     while True:
-        print(simplex)
         new_point = full_support(direction, poly1, poly2)
-        print(new_point)
         if list(new_point) == [0, 0]:
             return True
         if np.dot(new_point, direction) < 0:

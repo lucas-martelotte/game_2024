@@ -1,7 +1,7 @@
 from ..utils import Pos, Rect
 from .collider import Collider
 from .colliders import PolygonCollider, RectCollider
-from .gjk import gjk_algorithm
+from .gjk import gjk_algorithm_2d
 
 
 class CollisionDetector:
@@ -21,7 +21,9 @@ class CollisionDetector:
         ):  # isinstance(obj_1, RectCollider) and isinstance(obj_2, RectCollider):
             return CollisionDetector.AABBCollision(obj_1, obj_2)
         elif isinstance(obj_1, PolygonCollider) and isinstance(obj_2, PolygonCollider):
-            return Pos(0, 0) if gjk_algorithm(obj_1.as_array, obj_2.as_array) else None
+            return (
+                Pos(0, 0) if gjk_algorithm_2d(obj_1.as_array, obj_2.as_array) else None
+            )
         else:
             raise NotImplementedError()
 

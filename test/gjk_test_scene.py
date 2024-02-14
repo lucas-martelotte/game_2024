@@ -7,7 +7,7 @@ from src.core import Entity, Scene
 from src.core.collision import Collidable, CollisionManager2D
 from src.core.collision.colliders import PolygonCollider, RectCollider
 from src.core.gui import Button
-from src.core.utils import Pos, Rect
+from src.core.utils import FPSTracker, Pos, Rect
 from src.game.singletons import GameSettings
 
 
@@ -18,6 +18,8 @@ class GJKTestScene(Scene):
         screen_height = GameSettings().screen_height
 
         self.collision = False
+        self.fps_tracker = FPSTracker()
+        self.font = pygame.font.SysFont("Comic Sans MS", 30)
 
         polygon = [Pos(300, 300), Pos(300, 400), Pos(400, 600), Pos(400, 300)]
         collider = PolygonCollider(polygon)
@@ -44,6 +46,7 @@ class GJKTestScene(Scene):
 
     def update(self):
         super().update()
+        self.fps_tracker.update()
         self.mouse_button.set_position(Pos(*pygame.mouse.get_pos()))
         self.collision_manager.update()
         collisions = self.collision_manager.get_collisions()
@@ -64,6 +67,8 @@ class GJKTestScene(Scene):
         screen.blit(sfc, pos)
         sfc, pos = self.mouse_button.get_surface()
         screen.blit(sfc, pos)
+        text_surface = self.font.render(f"FPS: {self.fps_tracker}", False, (0, 0, 0))
+        screen.blit(text_surface, (10, 10))
 
     def handle_button_reflections(self, button: Button):
         rect = button.collider.bounding_rect
