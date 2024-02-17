@@ -63,7 +63,12 @@ class Collision(PreCollision):
             return False
         if not super().__eq__(other):
             return False
-        return self.minimal_translation_vector == other.minimal_translation_vector
+        vec1, vec2 = self.minimal_translation_vector, other.minimal_translation_vector
+        if self.obj_1 == other.obj_1:
+            return vec1 == vec2
+        return vec1 == Pos.inv(vec2)
 
     def __hash__(self) -> int:
-        return hash((hash(super()), self.minimal_translation_vector))
+        vector = self.minimal_translation_vector
+        abs_vector = Pos(abs(vector.x), abs(vector.y))
+        return hash((hash(super()), abs_vector))

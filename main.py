@@ -8,10 +8,12 @@ pygame.mixer.init()
 pygame.display.set_caption("2024 Game")
 
 if __name__ == "__main__":
+    from test.aabb_test_scene import AABBTestScene
     from test.collision_test_scene import CollisionTestScene
     from test.gjk_test_scene import GJKTestScene
     from test.test_scene import TestScene
 
-    control = Control(GJKTestScene())
+    # control = Control(GJKTestScene())
     # control = Control(CollisionTestScene())
+    control = Control(AABBTestScene())
     control.main_loop()

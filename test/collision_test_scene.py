@@ -30,7 +30,7 @@ class CollisionTestScene(Scene):
             button = Button(
                 Pos(x, y),
                 GameSettings().fps,
-                RectCollider(Rect(0, 0, width, height)),
+                RectCollider(0, 0, width, height),
                 idle_sfc,
             )
             button.set_velocity_in_seconds(velocity)

@@ -4,7 +4,6 @@
 - Optimize GJK
 - Add documentation to collision module
 - Implement minimal translation vector for GJK
-- Implement minimal translation vector for AABB
 - Implement point collision for Polygon
 - Implement __is_convex for polygon
 - Implement Circle-Polygon collision

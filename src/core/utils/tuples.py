@@ -41,6 +41,18 @@ class Rect(NamedTuple):
         return Rect(rect.x + vector.x, rect.y + vector.y, rect.width, rect.height)
 
     @property
+    def center(self) -> Pos:
+        return Pos(self.x_middle, self.y_middle)
+
+    @property
+    def x_middle(self) -> int:
+        return self.x + self.width // 2
+
+    @property
+    def y_middle(self) -> int:
+        return self.y + self.height // 2
+
+    @property
     def top_left(self) -> Pos:
         return Pos(self.left, self.top)
 

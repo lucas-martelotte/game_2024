@@ -11,54 +11,33 @@ from src.core.utils import FPSTracker, Pos, Rect
 from src.game.singletons import GameSettings
 
 
-class GJKTestScene(Scene):
+class AABBTestScene(Scene):
     def __init__(self) -> None:
         super().__init__("TEST")
         screen_width = GameSettings().screen_width
         screen_height = GameSettings().screen_height
 
         self.collision = False
+        self.vector: Pos | None = None
         self.fps_tracker = FPSTracker()
         self.font = pygame.font.SysFont("Comic Sans MS", 30)
 
-        # idle_sfc = Surface((200, 200), pygame.SRCALPHA)
-        # idle_sfc.fill((0, 0, 0))
-        # self.fixed_button = Button(
-        #     Pos(300, 300),
-        #     GameSettings().fps,
-        #     RectCollider(0, 0, 200, 200),
-        #     idle_sfc,
-        # )
-
-        # idle_sfc = Surface((200, 200), pygame.SRCALPHA)
-        # idle_sfc.fill((0, 0, 0))
-        # self.mouse_button = Button(
-        #     Pos(300, 300),
-        #     GameSettings().fps,
-        #     RectCollider(0, 0, 200, 200),
-        #     idle_sfc,
-        # )
-
-        polygon = [Pos(300, 300), Pos(300, 400), Pos(400, 600), Pos(400, 300)]
-        collider = PolygonCollider(polygon)
-        rect = collider.bounding_rect
-        idle_sfc = Surface((rect.width, rect.height), pygame.SRCALPHA)
-        relative_polygon = PolygonCollider(polygon)
-        relative_polygon.move(Pos(-300, -300))
-        pygame.draw.polygon(idle_sfc, (0, 0, 0), relative_polygon.points)
+        idle_sfc = Surface((200, 200), pygame.SRCALPHA)
+        pygame.draw.rect(idle_sfc, (0, 0, 255), (0, 0, 200, 200), width=10)
         self.fixed_button = Button(
-            Pos(300, 300), GameSettings().fps, collider, idle_sfc
+            Pos(300, 300),
+            GameSettings().fps,
+            RectCollider(0, 0, 200, 200),
+            idle_sfc,
         )
 
-        polygon = [Pos(500, 500), Pos(550, 600), Pos(600, 600)]
-        collider = PolygonCollider(polygon)
-        rect = collider.bounding_rect
-        idle_sfc = Surface((rect.width, rect.height), pygame.SRCALPHA)
-        relative_polygon = PolygonCollider(polygon)
-        relative_polygon.move(Pos(-500, -500))
-        pygame.draw.polygon(idle_sfc, (0, 0, 0), relative_polygon.points)
+        idle_sfc = Surface((200, 200), pygame.SRCALPHA)
+        pygame.draw.rect(idle_sfc, (255, 0, 0), (0, 0, 200, 200), width=10)
         self.mouse_button = Button(
-            Pos(500, 500), GameSettings().fps, collider, idle_sfc
+            Pos(800, 800),
+            GameSettings().fps,
+            RectCollider(-100, -100, 200, 200),
+            idle_sfc,
         )
 
         self.collision_manager = CollisionManager2D()
@@ -73,6 +52,14 @@ class GJKTestScene(Scene):
         self.collision_manager.update()
         collisions = self.collision_manager.get_collisions()
         self.collision = len(collisions) > 0
+        if self.collision:
+            collision = list(collisions)[0]
+            vector = collision.minimal_translation_vector
+            self.vector = (
+                vector if collision.obj_1 == self.mouse_button else Pos.inv(vector)
+            )
+        else:
+            self.vector = None
 
     def on_event(self, event: pygame.Event):
         super().on_event(event)
@@ -81,10 +68,11 @@ class GJKTestScene(Scene):
 
     def render(self, screen):
         super().render(screen)
-        if self.collision:
-            screen.fill((255, 0, 0))
-        else:
-            screen.fill((255, 255, 255))
+        screen.fill((255, 255, 255))
+        # if self.collision:
+        #     screen.fill((255, 0, 0))
+        # else:
+        #     screen.fill((255, 255, 255))
         sfc, pos = self.fixed_button.get_surface()
         screen.blit(sfc, pos)
         sfc, pos = self.mouse_button.get_surface()
@@ -93,6 +81,14 @@ class GJKTestScene(Scene):
             f"FPS: {self.fps_tracker.fps}", False, (0, 0, 0)
         )
         screen.blit(text_surface, (10, 10))
+        rect = self.fixed_button.collider.bounding_rect
+        if self.vector is not None:
+            pygame.draw.line(
+                screen, (0, 255, 0), rect.center, Pos.add(rect.center, self.vector), 5
+            )
+            pygame.draw.circle(
+                screen, (0, 255, 0), Pos.add(rect.center, self.vector), 10
+            )
 
     def handle_button_reflections(self, button: Button):
         rect = button.collider.bounding_rect

@@ -5,7 +5,8 @@ from .polygon_collider import PolygonCollider
 
 
 class RectCollider(PolygonCollider):
-    def __init__(self, rect: Rect):
+    def __init__(self, x: int, y: int, width: int, height: int):
+        rect = Rect(x, y, width, height)
         self.rect = rect
         super().__init__(
             [rect.top_left, rect.bottom_left, rect.bottom_right, rect.top_right]

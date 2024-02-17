@@ -25,14 +25,17 @@ class Button(Entity):
         pressed_sfc (Surface | None, optional): the surface which will appear
             if the user is pressing the button. If None, sets to idle_sfc.
         """
-        super().__init__(position, fps)
         self.collider = collider
-        # self.collider.set_position(self.position)
         self.idle_sfc = idle_sfc
         self.pressed_sfc = pressed_sfc or idle_sfc
         self.hover_sfc = hover_sfc or idle_sfc
+        super().__init__(position, fps)
 
     def get_surface(self) -> tuple[Surface, Pos]:
+        """
+        The surface top-left position is the top-left position
+        of the collider's bounding rect.
+        """
         pos = Pos.from_rect(self.collider.bounding_rect)
         if self.is_left_idle():
             return self.idle_sfc, pos
