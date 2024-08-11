@@ -21,10 +21,10 @@ class CollisionTestScene(Scene):
         screen_width = GameSettings().screen_width
         screen_height = GameSettings().screen_height
         self.buttons: set[Button] = set()
-        for i in range(350):
-            width, height = randint(10, 20), randint(10, 20)
+        for i in range(20):
+            width, height = randint(50, 100), randint(50, 100)
             x, y = randint(0, screen_width - width), randint(0, screen_height - height)
-            velocity = Pos(randint(-5, 5), randint(-5, 5))
+            velocity = Pos(randint(-100, 100), randint(-100, 100))
             idle_sfc = Surface((width, height))
             idle_sfc.fill((0, 0, 0))
             button = Button(
@@ -52,12 +52,32 @@ class CollisionTestScene(Scene):
         for collision in collisions:
             obj_1 = collision.obj_1
             obj_2 = collision.obj_2
+            vector = collision.minimal_translation_vector
             assert isinstance(obj_1, Button)
             assert isinstance(obj_2, Button)
-            sfc_1, _ = obj_1.get_surface()
-            sfc_2, _ = obj_2.get_surface()
-            sfc_1.fill((255, 0, 0))
-            sfc_2.fill((255, 0, 0))
+            # sfc_1, _ = obj_1.get_surface()
+            # sfc_2, _ = obj_2.get_surface()
+            # sfc_1.fill((255, 0, 0))
+            # sfc_2.fill((255, 0, 0))
+            obj_1.move(vector)
+            if Pos.dot(vector, obj_1.velocity) < 0:
+                if vector.x == 0:
+                    obj_1.set_velocity_in_frames(
+                        Pos(obj_1.velocity.x, -obj_1.velocity.y)
+                    )
+                else:
+                    obj_1.set_velocity_in_frames(
+                        Pos(-obj_1.velocity.x, obj_1.velocity.y)
+                    )
+            if Pos.dot(vector, obj_2.velocity) > 0:
+                if vector.x == 0:
+                    obj_2.set_velocity_in_frames(
+                        Pos(obj_2.velocity.x, -obj_2.velocity.y)
+                    )
+                else:
+                    obj_2.set_velocity_in_frames(
+                        Pos(-obj_2.velocity.x, obj_2.velocity.y)
+                    )
 
     def on_event(self, event: pygame.Event):
         super().on_event(event)

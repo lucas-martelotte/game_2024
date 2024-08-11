@@ -8,5 +8,5 @@ class Collidable(ABC):
         super().__init__()
 
     @abstractmethod
-    def get_colliders(self) -> set[Collider]:
+    def get_colliders(self) -> frozenset[Collider]:
         pass

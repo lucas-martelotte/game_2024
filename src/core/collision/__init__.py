@@ -1,5 +1,5 @@
 from .collidable import Collidable
-from .collider import Collider, ComplexCollider
-from .collision_detection import CollisionDetector, gjk_algorithm_2d
+from .collider import Collider
+from .collision_detection import CollisionDetector
 from .collision_detection.collision_detector import CollisionDetector
 from .collision_manager import CollisionManager2D

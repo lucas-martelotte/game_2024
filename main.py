@@ -14,6 +14,6 @@ if __name__ == "__main__":
     from test.test_scene import TestScene
 
     # control = Control(GJKTestScene())
-    # control = Control(CollisionTestScene())
-    control = Control(AABBTestScene())
+    control = Control(CollisionTestScene())
+    # control = Control(AABBTestScene())
     control.main_loop()

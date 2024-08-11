@@ -30,10 +30,10 @@ class Entity(Collidable):
     def get_surface(self) -> tuple[Surface, Pos]:
         raise NotImplementedError()
 
-    def _get_colliders(self) -> set[Collider]:
+    def _get_colliders(self) -> frozenset[Collider]:
         raise NotImplementedError()
 
-    def get_colliders(self) -> set[Collider]:
+    def get_colliders(self) -> frozenset[Collider]:
         colliders = self._get_colliders()
         for collider in colliders:
             collider.set_position(self.position)

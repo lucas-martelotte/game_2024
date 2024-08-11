@@ -7,7 +7,6 @@
 - Implement point collision for Polygon
 - Implement __is_convex for polygon
 - Implement Circle-Polygon collision
-- Implement bounding_rect of ComplexCollider
 
 ================== IDEAS ==================
 

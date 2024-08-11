@@ -44,5 +44,5 @@ class Button(Entity):
         else:
             return self.hover_sfc, pos
 
-    def _get_colliders(self) -> set[Collider]:
-        return {self.collider}
+    def _get_colliders(self) -> frozenset[Collider]:
+        return frozenset({self.collider})

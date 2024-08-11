@@ -78,7 +78,7 @@ class AABBTestScene(Scene):
         sfc, pos = self.mouse_button.get_surface()
         screen.blit(sfc, pos)
         text_surface = self.font.render(
-            f"FPS: {self.fps_tracker.fps}", False, (0, 0, 0)
+            f"FPS: {round(self.fps_tracker.fps,2)}", False, (0, 0, 0)
         )
         screen.blit(text_surface, (10, 10))
         rect = self.fixed_button.collider.bounding_rect

@@ -27,3 +27,7 @@ class SceneTransitionState(Enum):
     CLOSE_AND_MOVE_TO_NEW_SCENE = auto()
     MOVE_TO_EXISTING_SCENE = auto()
     MOVE_TO_NEW_SCENE = auto()
+
+
+class InGameEntityState(Enum):
+    IDLE = auto()
